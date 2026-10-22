@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="/favicon-192.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="./resources/website-logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./home.css">
+    <title>Secrect Card | Message Privately, Message Securely</title>
+</head>
+<body>
+    <div class="main-container">
+
+        <div class="header-container">Secrect Card</div>
+
+        <div class="welcome-msg-conatiner">
+            <div class="welcome-msg1">Message Privately,</div>
+            <div class="welcome-msg2">Message Securely.</div>
+            <div class="welcome-msg3">Start Your Private Conversations</div>
+        </div>
+
+        <div class="create-account-btn-container">
+            <a href="/signup"><button class="create-account-btn">Create Your Account</button></a>
+        </div>
+
+        <div class="login-link-container">
+            Already have am account, please <a href="/login" style="margin-left: 5px;">log in</a>
+        </div>
+
+        <div class="footer-container">
+            <a href="#">About</a>
+            <a href="#">Features</a>
+            <a href="#">Security</a>
+            <a href="#">FAQ</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Services</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('Service Worker registered successfully!', reg))
+                .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+
+</body>
+</html>
