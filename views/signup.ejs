@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./resources/website-logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="signup.css">
+    <title>Secrect Card | Signup</title>
+</head>
+<body>
+    <div class="main-container">
+
+        <div class="header-container">Secrect Card</div>
+
+        <div class="signup-container">
+
+            <form action="/create-account" method="POST" class="signup-container">
+
+                <div class="font-size-big">Create Your Account</div>
+
+                <div class="inputbox-container">
+                    <input type="text" name="userName" class="inputbox" placeholder=" Enter Your Full Name" required>
+                </div>
+
+                <div class="inputbox-container">
+                    <input type="text" name="userId" class="inputbox" value="<%= userId %>" readonly>
+                </div>
+
+                <div class="inputbox-container">
+                    <input type="password" name="userPassword" class="inputbox" placeholder=" Enter a Strong Password" required>
+                </div>
+
+                <div class="inputbox-container">
+                    <input type="password" name="userCheckPassword" class="inputbox" placeholder=" Re-Enter Password" required>
+                </div>
+
+                <div class="font-size-small">By creating an account you agree to our <a href="#" style="margin-left: 5px; margin-right: 5px;">T&C</a> and <a href="#" style="margin-left: 5px;">Privacy Policy</a></div>
+
+                <div class="create-account-btn-container">
+                    <button class="create-account-btn"> Create Account </button>
+                </div>
+            </form>
+
+            <% if (tempMsg) { %>
+                <div class="status-container"> <%= tempMsg %> </div>
+            <% } %>
+
+            <div class="font-size-small">
+                <a href="/">Back To Home</a>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>
