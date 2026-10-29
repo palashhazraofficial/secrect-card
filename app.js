@@ -33,7 +33,10 @@ app.use(session({
 }))
 
 app.post('/create-account', async (req, res) => {
-    const {userName, userId, userPassword, userCheckPassword} = req.body;
+    const userName = req.body.userName.trim();
+    const userId = req.body.userId.trim();
+    const userPassword = req.body.userPassword.trim();
+    const userCheckPassword = req.body.userCheckPassword.trim();
 
     if (userPassword === userCheckPassword) {
 
@@ -54,7 +57,7 @@ app.post('/create-account', async (req, res) => {
 })
 
 app.post('/signup', async (req, res) => {
-    const {userId} = req.body;
+    const userId = req.body.userId.trim();
 
     if (!userId) {
         req.session.tempMsg = "User ID required! Please enter a valid one.";
