@@ -4,9 +4,11 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const argon2 = require('argon2');
 require('dotenv').config();
 
 const check_userId = require('./modules/check_userId.js');
+const save_data_into_db = require('./modules/save_data_into_db.js');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -30,8 +32,28 @@ app.use(session({
     store: store
 }))
 
+app.post('/create-account', async (req, res) => {
+    const {userName, userId, userPassword, userCheckPassword} = req.body;
+
+    if (userPassword === userCheckPassword) {
+
+        const hashedPassword = await argon2.hash(userPassword);
+        save_data_into_db(userName, userId, hashedPassword).then(() => {
+            req.session.tempMsg = null;
+            return res.redirect('login');
+        }).catch((err) => {
+            console.log("Error while saving data into database: ", err);
+            req.session.tempMsg = "Error while saving data into database. Please resubmit the form."
+            return res.redirect('/getuserid');
+        })
+
+    } else {
+        req.session.tempMsg = "Password match incorrect! Please enter values correctly."
+        return res.redirect('/getuserid');
+    }
+})
+
 app.post('/signup', async (req, res) => {
-    console.log(req.url, req.method);
     const {userId} = req.body;
 
     if (!userId) {
@@ -54,14 +76,16 @@ app.post('/signup', async (req, res) => {
 
 })
 
+app.get('/login', (req, res) => {
+    res.render('login');
+})
+
 app.get('/getuserid', (req, res) => {
-    console.log(req.url, req.method);
     let tempMsg = req.session.tempMsg;
     res.render('getuserid', {tempMsg : tempMsg});
 })
 
 app.get('/', (req, res) => {
-    console.log(req.url, req.method);
     res.render('welcome-page');
 })
 
