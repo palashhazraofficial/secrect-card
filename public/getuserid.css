@@ -54,11 +54,11 @@ a {
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-weight: 400;
+    font-weight: 300;
 }
 
 .inputbox {
-    height: 30px;
+    height: 45px;
     width: 300px;
     cursor: text;
     border: none;
@@ -101,5 +101,9 @@ a {
 @media (max-width: 400px) {
     .font-size-small {
         font-size: 15px;
+    }
+
+    .font-size-big {
+        font-size: 22px
     }
 }
