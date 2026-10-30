@@ -9,6 +9,7 @@ require('dotenv').config();
 
 const check_userId = require('./modules/check_userId.js');
 const save_data_into_db = require('./modules/save_data_into_db.js');
+const login_user = require('./modules/login_user.js');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -31,6 +32,25 @@ app.use(session({
     saveUninitialized: true,
     store: store
 }))
+
+app.post('/login', async (req, res) => {
+    const userId = req.body.userId.trim();
+    const userPassword = req.body.userPassword.trim();
+    const response = await login_user(userId, userPassword);
+
+    if(!response.status) {
+        req.session.tempMsg = response.msg;
+        return res.redirect('/login');
+    } else {
+        req.session.isLoggedIn = true;
+        req.session.userName = response.userName;
+        req.session.userId = response.userId;
+        req.session.user_id = response.user_id.toString();
+        req.session.tempMsg = null;
+        return res.redirect('/chatroom');
+    }
+
+})
 
 app.post('/create-account', async (req, res) => {
     const userName = req.body.userName.trim();
@@ -79,17 +99,38 @@ app.post('/signup', async (req, res) => {
 
 })
 
+app.get('/chatroom', (req, res) => {
+    if(req.session.isLoggedIn) {
+        return res.render('chatroom');
+    } else {
+        return res.redirect('/');
+    }
+})
+
 app.get('/login', (req, res) => {
-    res.render('login');
+    if(!req.session.isLoggedIn) {
+        let tempMsg = req.session.tempMsg;
+        return res.render('login', {tempMsg});
+    } else {
+        return res.redirect('/chatroom');
+    }
 })
 
 app.get('/getuserid', (req, res) => {
-    let tempMsg = req.session.tempMsg;
-    res.render('getuserid', {tempMsg : tempMsg});
+    if(!req.session.isLoggedIn) {
+        let tempMsg = req.session.tempMsg;
+        return res.render('getuserid', {tempMsg : tempMsg});
+    } else {
+        return res.redirect('/chatroom');
+    }
 })
 
 app.get('/', (req, res) => {
-    res.render('welcome-page');
+    if(!req.session.isLoggedIn) {
+        return res.render('welcome-page');
+    } else {
+        return res.redirect('/chatroom');
+    }
 })
 
 const PORT = 3000;
