@@ -82,11 +82,13 @@ a:hover {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    border: 2px solid rgba(1, 100, 249, 0.562);
+    border-radius: 9px;
 }
 
 .icon-container-2 {
-    height: 100%;
-    width: 30%;
+    height: 50%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,10 +96,8 @@ a:hover {
 
 .inbox-2, .send-card-2, .profile-2 {
     height: 100%;
-    width: fit-content;
+    width: 100%;
     border-radius: 9px;
-    margin: 10px;
-    padding: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -132,7 +132,7 @@ a:hover {
         display: none !important;
     }
     .no-msg-container {
-        font-size: 15px;
+        font-size: 18px;
     }
 }
 
