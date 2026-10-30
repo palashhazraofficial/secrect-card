@@ -3,10 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./resources/website-logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="login.css">
     <title>Secrect Card | Login</title>
 </head>
 <body>
-    Login
-    <a href="/">Back To Home</a>
+    <div class="main-container">
+
+        <div class="header-container">Secrect Card</div>
+
+        <div class="login-container">
+
+            <form action="/login" method="POST" class="login-container">
+
+                <div class="font-size-big">Welcome Back! Login</div>
+
+                <div class="inputbox-container">
+                    <input type="text" name="userId" class="inputbox" placeholder="Enter Your User Id">
+                </div>
+
+                <div class="inputbox-container">
+                    <input type="password" name="userPassword" class="inputbox" placeholder=" Enter Your Password" required>
+                </div>
+
+                <div class="login-btn-container">
+                    <button class="login-btn"> Log in </button>
+                </div>
+            </form>
+
+            <% if (tempMsg) { %>
+                <div class="status-container"> <%= tempMsg %> </div>
+            <% } %>
+
+            <div class="font-size-small">
+                <a href="/">Back To Home</a>
+            </div>
+
+        </div>
+
+    </div>
 </body>
 </html>
