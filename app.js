@@ -47,7 +47,7 @@ app.post('/login', async (req, res) => {
         req.session.userId = response.userId;
         req.session.user_id = response.user_id.toString();
         req.session.tempMsg = null;
-        return res.redirect('/chatroom');
+        return res.redirect('/inbox');
     }
 
 })
@@ -99,9 +99,26 @@ app.post('/signup', async (req, res) => {
 
 })
 
-app.get('/chatroom', (req, res) => {
+app.get('/inbox', (req, res) => {
     if(req.session.isLoggedIn) {
-        return res.render('chatroom');
+        let InboxMessages = null;
+        return res.render('inbox', {InboxMessages});
+    } else {
+        return res.redirect('/');
+    }
+})
+
+app.get('/send-card', (req, res) => {
+    if(req.session.isLoggedIn) {
+        return res.render('send-card');
+    } else {
+        return res.redirect('/');
+    }
+})
+
+app.get('/profile', (req, res) => {
+    if(req.session.isLoggedIn) {
+        return res.render('profile');
     } else {
         return res.redirect('/');
     }
@@ -112,7 +129,7 @@ app.get('/login', (req, res) => {
         let tempMsg = req.session.tempMsg;
         return res.render('login', {tempMsg});
     } else {
-        return res.redirect('/chatroom');
+        return res.redirect('/inbox');
     }
 })
 
@@ -121,7 +138,7 @@ app.get('/getuserid', (req, res) => {
         let tempMsg = req.session.tempMsg;
         return res.render('getuserid', {tempMsg : tempMsg});
     } else {
-        return res.redirect('/chatroom');
+        return res.redirect('/inbox');
     }
 })
 
@@ -129,7 +146,7 @@ app.get('/', (req, res) => {
     if(!req.session.isLoggedIn) {
         return res.render('welcome-page');
     } else {
-        return res.redirect('/chatroom');
+        return res.redirect('/inbox');
     }
 })
 
