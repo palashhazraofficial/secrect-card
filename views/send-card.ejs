@@ -20,6 +20,20 @@
             </div>
 
             <div class="container-1-2">
+                
+                <div class="form-container">
+                    <form action="/send-card/<%= userId %>" method="POST" class="form-container">
+                        <div class="inputbox-container">
+                            <input type="text" name="userId" class="inputbox" placeholder=" Enter User ID">
+                        </div>
+                        <div class="textarea-container">
+                            <textarea class="textarea" name="message" placeholder=" Enter Your Feelings Here..."></textarea>
+                        </div>
+                        <div class="send-btn-container">
+                            <button class="send-btn"><i class="fa-solid fa-paper-plane" style="margin-right: 5px;"></i>Send</button>
+                        </div>
+                    </form>
+                </div>
 
             </div>
 

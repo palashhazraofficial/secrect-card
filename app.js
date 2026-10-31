@@ -110,7 +110,8 @@ app.get('/inbox', (req, res) => {
 
 app.get('/send-card', (req, res) => {
     if(req.session.isLoggedIn) {
-        return res.render('send-card');
+        let userId = req.session.userId;
+        return res.render('send-card', {userId});
     } else {
         return res.redirect('/');
     }

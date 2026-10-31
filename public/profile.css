@@ -131,6 +131,16 @@ a:hover {
 }
 
 @media (max-width: 500px) {
+    .container-1-1 {
+        height: 0;
+        width: 0;
+    }
+
+    .container-1-2 {
+        height: 100%;
+        width: 100%;
+    }
+
     .container-1-1, .inbox, .send-card, .profile, .icon-container {
         display: none !important;
     }
