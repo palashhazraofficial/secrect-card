@@ -10,6 +10,9 @@ require('dotenv').config();
 const check_userId = require('./modules/check_userId.js');
 const save_data_into_db = require('./modules/save_data_into_db.js');
 const login_user = require('./modules/login_user.js');
+const send_msg = require('./modules/send_msg.js');
+const fetch_msg = require('./modules/fetch_msg.js');
+const fetch_msgCount = require('./modules/fetch_msgCount.js');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -99,27 +102,99 @@ app.post('/signup', async (req, res) => {
 
 })
 
-app.get('/inbox', (req, res) => {
-    if(req.session.isLoggedIn) {
-        let InboxMessages = null;
-        return res.render('inbox', {InboxMessages});
+app.post('/send-card/:userId', async (req, res) => {
+
+    const dbUserId = req.session.userId;
+    const senderUserId = req.params.userId;
+
+    if (req.session.isLoggedIn || dbUserId === senderUserId) {
+
+        let senderName = req.session.userName;
+        let msgTime = new Date().toLocaleString();
+
+        let message = req.body.message;
+        let receiverUserId = req.body.userId.trim();
+
+        let receiverDetails = await check_userId(receiverUserId);
+
+        if (!message || !receiverUserId) {
+
+            req.session.tempMsg = "Fill all the details first!"
+            return res.redirect('/send-card');
+
+        } else if (!receiverDetails){
+
+            req.session.tempMsg = "User Id does not exists!"
+            return res.redirect('/send-card');
+
+        } else {
+
+            send_msg(senderName, senderUserId, receiverUserId, msgTime, message).then(() => {
+                req.session.tempMsg = null;
+                return res.redirect('/send-card');
+            }).catch((err) => {
+                req.session.tempMsg = "Internal server error! Message isn't send";
+                return res.redirect('/send-card');
+            })
+
+        }
+
     } else {
+
+        req.session.isLoggedIn = false;
         return res.redirect('/');
+
     }
+
+
 })
 
-app.get('/send-card', (req, res) => {
+app.get('/inbox/:receiverUserId/:MsgId', async (req, res) => {
+
+    const receiverUserId = req.params.receiverUserId;
+    const dbUserId = req.session.userId;
+
+    if (req.session.isLoggedIn || receiverUserId === dbUserId) {
+
+        const MsgNo = await fetch_msgCount(receiverUserId);
+        return res.render('message-page', {MsgNo});
+
+    } else {
+
+        req.session.isLoggedIn = false;
+        return res.redirect('/');
+
+    }
+
+})
+
+app.get('/inbox', async (req, res) => {
     if(req.session.isLoggedIn) {
         let userId = req.session.userId;
-        return res.render('send-card', {userId});
+        const InboxMessages = await fetch_msg(userId);
+        const MsgNo = await fetch_msgCount(userId);
+        return res.render('inbox', {InboxMessages, MsgNo});
     } else {
         return res.redirect('/');
     }
 })
 
-app.get('/profile', (req, res) => {
+app.get('/send-card', async (req, res) => {
     if(req.session.isLoggedIn) {
-        return res.render('profile');
+        let userId = req.session.userId;
+        let tempMsg = req.session.tempMsg;
+        const MsgNo = await fetch_msgCount(userId);
+        return res.render('send-card', {userId, tempMsg, MsgNo});
+    } else {
+        return res.redirect('/');
+    }
+})
+
+app.get('/profile', async (req, res) => {
+    if(req.session.isLoggedIn) {
+        let userId = req.session.userId;
+        const MsgNo = await fetch_msgCount(userId);
+        return res.render('profile', {MsgNo});
     } else {
         return res.redirect('/');
     }
