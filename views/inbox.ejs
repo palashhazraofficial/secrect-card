@@ -6,7 +6,7 @@
     <link rel="icon" href="./resources/website-logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="inbox.css">
-    <title>Secrect Card | Inbox</title>
+    <title>Secrect Card | (<%= MsgNo %>) Inbox</title>
 </head>
 <body>
     <div class="main-container">
@@ -14,24 +14,40 @@
         <div class="container-1">
 
             <div class="container-1-1">
-                <div class="inbox"><div class="icon-container"><i class="fa-solid fa-inbox"></i></div><a href="/inbox">Inbox</a></div>
+                <div class="inbox"><div class="icon-container"><i class="fa-solid fa-inbox"></i></div><a href="/inbox">Inbox (<%= MsgNo %>)</a></div>
                 <div class="send-card"><div class="icon-container"><i class="fa-regular fa-envelope"></i></div><a href="/send-card">Send Card</a></div>
                 <div class="profile"><div class="icon-container"><i class="fa-solid fa-circle-user"></i></div><a href="/profile">Profile</a></div>
             </div>
 
             <div class="container-1-2">
+
                 <% if(!InboxMessages) { %>
+
                     <div class="no-msg-container">
                         <div class="no-msg-icon"><i class="fa-solid fa-comment-slash"></i></div>
                         <div class="no-msg-text">No cards yet to see!</div>
                     </div>
-                <% } %>
+
+                <% } else { %>
+
+                    <% InboxMessages.forEach((Message) => { %>
+
+                        <div class="msg-container">
+                            <div class="senderName"><i class="fa-solid fa-user" style="margin-right: 5px;"></i><%= Message.senderName %></div>
+                            <div class="senderUserId"><i class="fa-solid fa-id-card" style="margin-right: 5px;"></i>@<%= Message.senderUserId %></div>
+                            <div class="sendTime"><i class="fa-solid fa-clock" style="margin-right: 5px;"></i><%= Message.msgTime %></div>
+                            <div class="read-btn"><a href="/inbox/<%= Message.receiverUserId %>/<%= Message._id.toString() %>" class="read-btn">Open Card</a></div>
+                        </div>
+
+                    <% }); %>
+
+                <% }; %>
             </div>
 
         </div>
 
         <div class="container-2">
-            <a href="/inbox" style="width: 33%; height: 100%;"><div class="inbox-2"><div class="icon-container-2"><i class="fa-solid fa-inbox"></i></div>Inbox</div></a>
+            <a href="/inbox" style="width: 33%; height: 100%;"><div class="inbox-2"><div class="icon-container-2"><i class="fa-solid fa-inbox"></i></div>Inbox (<%= MsgNo %>)</div></a>
             <a href="/send-card" style="width: 33%; height: 100%;"><div class="send-card-2"><div class="icon-container-2"><i class="fa-regular fa-envelope"></i></div>Send Card</div></a>
             <a href="/profile" style="width: 33%; height: 100%;"><div class="profile-2"><div class="icon-container-2"><i class="fa-solid fa-circle-user"></i></div>Profile</div></a>
         </div>

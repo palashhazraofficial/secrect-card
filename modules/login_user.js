@@ -1,5 +1,5 @@
 const argon2 = require('argon2');
-const userprofiles = require('../database/schema.js');
+const userprofiles = require('../database/userProfile_Schema.js');
 const check_userId = require('./check_userId.js');
 
 async function login_user(userId, userPassword) {

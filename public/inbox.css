@@ -35,6 +35,9 @@ a {
 .container-1-2 {
     height: 100%;
     width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .inbox, .send-card, .profile {
@@ -141,6 +144,43 @@ a:hover {
     color: white;
 }
 
+.msg-container {
+    height: fit-content;
+    width: 60%;
+    border: 2px solid rgb(1, 100, 249);
+    border-radius: 9px;
+    padding: 10px;
+    margin: 0 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.read-btn {
+    height: fit-content;
+    width: fit-content;
+    color: rgb(1, 100, 249);
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.read-btn :hover {
+    color: rgb(1, 100, 249);
+    text-decoration: dotted;
+    font-weight: bold;
+}
+
+.senderName {
+    font-family: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+.senderUserId, .sendTime {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.63);
+}
+
 @media (max-width: 500px) {
     .container-1-1 {
         height: 0;
@@ -155,8 +195,13 @@ a:hover {
     .container-1-1, .inbox, .send-card, .profile, .icon-container {
         display: none !important;
     }
+
     .no-msg-container {
         font-size: 18px;
+    }
+
+    .senderName, .senderUserId, .sendTime {
+        font-size: 15px;
     }
 }
 

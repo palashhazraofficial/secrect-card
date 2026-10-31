@@ -1,4 +1,4 @@
-const userprofiles = require('../database/schema.js');
+const userprofiles = require('../database/userProfile_Schema.js');
 
 function save_data_into_db (userName, userId, userPassword) {
     const newUser = new userprofiles ({
