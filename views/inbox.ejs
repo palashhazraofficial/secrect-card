@@ -19,9 +19,13 @@
                 <div class="profile"><div class="icon-container"><i class="fa-solid fa-circle-user"></i></div><a href="/profile">Profile</a></div>
             </div>
 
+            <% if (tempMsg) { %>
+                <div class="status-container"> <%= tempMsg %> </div>
+            <% } %>
+
             <div class="container-1-2">
 
-                <% if(!InboxMessages) { %>
+                <% if(MsgNo === 0) { %>
 
                     <div class="no-msg-container">
                         <div class="no-msg-icon"><i class="fa-solid fa-comment-slash"></i></div>

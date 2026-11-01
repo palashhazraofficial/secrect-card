@@ -11,24 +11,30 @@
 <body>
     <div class="main-container">
 
-        <div class="container-1">
+        <div class="card-container">
 
-            <div class="container-1-1">
-                <div class="inbox"><div class="icon-container"><i class="fa-solid fa-inbox"></i></div><a href="/inbox">Inbox (<%= MsgNo %>)</a></div>
-                <div class="send-card"><div class="icon-container"><i class="fa-regular fa-envelope"></i></div><a href="/send-card">Send Card</a></div>
-                <div class="profile"><div class="icon-container"><i class="fa-solid fa-circle-user"></i></div><a href="/profile">Profile</a></div>
+            <div class="message-header-container">
+                <div class="senderName"><%= Message.senderName %></div>
+                <div class="senderUserId">@<%= Message.senderUserId %></div>
+                <div class="msgTime">Time: <%= Message.msgTime %></div>
             </div>
 
-            <div class="container-1-2">
-                <a href="/inbox"><i class="fa-solid fa-angles-left"></i></a>
+            <div class="main-message-container">
+                <%= Message.message %>
+            </div>
+
+            <div class="delete-msg-btn-container">
+                <button class="delete-msg-btn"><a href="/inbox/<%= Message.receiverUserId %>/<%= Message._id.toString() %>/delete">Tear Card</a></button>
             </div>
 
         </div>
 
-        <div class="container-2">
-            <a href="/inbox" style="width: 33%; height: 100%;"><div class="inbox-2"><div class="icon-container-2"><i class="fa-solid fa-inbox"></i></div>Inbox (<%= MsgNo %>)</div></a>
-            <a href="/send-card" style="width: 33%; height: 100%;"><div class="send-card-2"><div class="icon-container-2"><i class="fa-regular fa-envelope"></i></div>Send Card</div></a>
-            <a href="/profile" style="width: 33%; height: 100%;"><div class="profile-2"><div class="icon-container-2"><i class="fa-solid fa-circle-user"></i></div>Profile</div></a>
+        <div class="reply-container">
+            <form class="reply-form" action="/inbox/<%= Message.receiverUserId %>/<%= Message._id.toString() %>/deleteAndSendMsg" method="POST">
+                <input type="hidden" value="<%= Message.senderUserId %>" name="receiverUserId">
+                <textarea class="reply" placeholder=" Reply Your Feelings..." name="message" required></textarea>
+                <div class="delete-msg-btn-container"><button class="delete-msg-btn" style="border-radius: 50%;"><i class="fa-solid fa-paper-plane"></i></button></div>
+            </form>
         </div>
 
     </div>
