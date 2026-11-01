@@ -27,6 +27,7 @@ a {
     align-items: center;
     flex-direction: column;
     margin-bottom: 10px;
+    padding: 10px;
 }
 
 .message-header-container {
@@ -81,7 +82,7 @@ a {
 }
 
 .reply-container {
-    height: 20%;
+    height: 15%;
     width: 70%;
 }
 
@@ -110,6 +111,6 @@ a {
     }
 
     .reply {
-        font-size: 18px;
+        font-size: 15px;
     }
 }
