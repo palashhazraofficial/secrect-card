@@ -13,6 +13,8 @@ const login_user = require('./modules/login_user.js');
 const send_msg = require('./modules/send_msg.js');
 const fetch_msg = require('./modules/fetch_msg.js');
 const fetch_msgCount = require('./modules/fetch_msgCount.js');
+const findMsgById = require('./modules/findMsgById.js');
+const deleteMsgById = require('./modules/deleteMsgById.js');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -133,6 +135,7 @@ app.post('/send-card/:userId', async (req, res) => {
                 req.session.tempMsg = null;
                 return res.redirect('/send-card');
             }).catch((err) => {
+                console.log("Internal server error! Message isn't send", err);
                 req.session.tempMsg = "Internal server error! Message isn't send";
                 return res.redirect('/send-card');
             })
@@ -152,18 +155,80 @@ app.post('/send-card/:userId', async (req, res) => {
 app.get('/inbox/:receiverUserId/:MsgId', async (req, res) => {
 
     const receiverUserId = req.params.receiverUserId;
+    const MsgId = req.params.MsgId;
     const dbUserId = req.session.userId;
 
     if (req.session.isLoggedIn || receiverUserId === dbUserId) {
 
-        const MsgNo = await fetch_msgCount(receiverUserId);
-        return res.render('message-page', {MsgNo});
+        findMsgById(MsgId).then((Message) => {
+            req.session.tempMsg = null;
+            return res.render('message-page', {Message});
+        }).catch((err) => {
+            console.log("An internal server problem occured while finding messages: ", err);
+            req.session.tempMsg = "An internal server problem occured! Try again."
+            return res.redirect('/inbox');
+        })
 
     } else {
-
-        req.session.isLoggedIn = false;
         return res.redirect('/');
+    }
 
+})
+
+app.get('/inbox/:receiverUserId/:MsgId/delete', async (req, res) => {
+
+    const receiverUserId = req.params.receiverUserId;
+    const MsgId = req.params.MsgId;
+    const dbUserId = req.session.userId;
+
+    if (req.session.isLoggedIn || receiverUserId === dbUserId) {
+
+        deleteMsgById(MsgId).then(() => {
+            req.session.tempMsg = null;
+            return res.redirect('/inbox');
+        }).catch((err) => {
+            console.log("An internal server problem occured while deleting message: ", err);
+            req.session.tempMsg = "An internal server problem occured! Try again.";
+            return res.redirect('/inbox'); 
+        })
+
+    } else {
+        return res.redirect('/');
+    }
+
+})
+
+app.post('/inbox/:receiverUserId/:MsgId/deleteAndSendMsg', async (req, res) => {
+
+    const senderName = req.session.userName;
+    const senderUserId = req.params.receiverUserId;
+    const receiverUserId = req.body.receiverUserId;
+    const msgTime = new Date().toLocaleString();
+    const message = req.body.message;
+    const MsgId = req.params.MsgId;
+    const dbUserId = req.session.userId;
+
+    if (req.session.isLoggedIn || senderUserId === dbUserId) {
+
+        send_msg(senderName, senderUserId, receiverUserId, msgTime, message).then(() => {
+            req.session.tempMsg = null;
+        }).catch((err) => {
+            console.log("Error while saving message: ", err);
+            req.session.tempMsg = "Error while sending message! Please try again.";
+            return res.redirect('/inbox');
+        })
+
+        deleteMsgById(MsgId).then(() => {
+            req.session.tempMsg = null;
+            return res.redirect('/inbox');
+        }).catch((err) => {
+            console.log("An internal server problem occured while deleting message: ", err);
+            req.session.tempMsg = "An internal server problem occured! Try again.";
+            return res.redirect('/inbox'); 
+        })
+
+    } else {
+        return res.redirect('/');
     }
 
 })
@@ -171,10 +236,12 @@ app.get('/inbox/:receiverUserId/:MsgId', async (req, res) => {
 app.get('/inbox', async (req, res) => {
     if(req.session.isLoggedIn) {
         let userId = req.session.userId;
+        let tempMsg = req.session.tempMsg;
         const InboxMessages = await fetch_msg(userId);
         const MsgNo = await fetch_msgCount(userId);
-        return res.render('inbox', {InboxMessages, MsgNo});
+        return res.render('inbox', {InboxMessages, MsgNo, tempMsg});
     } else {
+        
         return res.redirect('/');
     }
 })
