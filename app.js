@@ -112,10 +112,13 @@ app.post('/send-card/:userId', async (req, res) => {
     if (req.session.isLoggedIn || dbUserId === senderUserId) {
 
         let senderName = req.session.userName;
-        
-        let msgISOTime = new Date().toISOString();
-        const localDate = new Date(msgISOTime);
-        const msgTime = localDate.toLocaleString(); 
+
+        let msgTime = localDate.toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            dateStyle: "medium",
+            timeStyle: "medium",
+            hour12: true
+        }); 
 
         let message = req.body.message;
         let receiverUserId = req.body.userId.trim();
