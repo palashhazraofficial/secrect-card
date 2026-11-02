@@ -218,6 +218,10 @@ a:hover {
     .senderName, .senderUserId, .sendTime {
         font-size: 15px;
     }
+
+    .msg-container {
+        width: 90%;
+    }
 }
 
 @media (min-width: 500px) {
