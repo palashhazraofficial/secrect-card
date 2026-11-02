@@ -14,6 +14,7 @@ a {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: rgba(1, 100, 249, 0.562);
 }
 
 .card-container {
@@ -112,5 +113,14 @@ a {
 
     .reply {
         font-size: 15px;
+    }
+
+    .card-container {
+        border: none;
+    }
+
+    .reply-container {
+        height: 10%;
+        width: 70%;
     }
 }
