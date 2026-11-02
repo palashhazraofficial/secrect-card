@@ -112,7 +112,10 @@ app.post('/send-card/:userId', async (req, res) => {
     if (req.session.isLoggedIn || dbUserId === senderUserId) {
 
         let senderName = req.session.userName;
-        let msgTime = new Date().toLocaleString();
+        
+        let msgISOTime = new Date().toISOString();
+        const localDate = new Date(msgISOTime);
+        const msgTime = localDate.toLocaleString(); 
 
         let message = req.body.message;
         let receiverUserId = req.body.userId.trim();
