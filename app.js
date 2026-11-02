@@ -113,7 +113,7 @@ app.post('/send-card/:userId', async (req, res) => {
 
         let senderName = req.session.userName;
 
-        let msgTime = localDate.toLocaleString("en-IN", {
+        let msgTime = new Date().toLocaleString("en-IN", {
             timeZone: "Asia/Kolkata",
             dateStyle: "medium",
             timeStyle: "medium",
